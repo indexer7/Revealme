@@ -1,0 +1,43 @@
+
+.flow-root-bg {
+  background: #ffffff;
+}
+
+.custom-node {
+  background: #ffffff;
+  border: 1px solid #000000;
+  color: #000000;
+  padding: 15px 10px;
+  min-width: 180px;
+  min-height: 40px;
+  border-radius: 2px;
+  font-size: 1rem;
+  text-align: center;
+  white-space: pre-line;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-node {
+  border-radius: 2px;
+}
+
+.decision-node {
+  border-radius: 2px;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0 50%);
+  background: #ffffff;
+  border: 1px solid #000000;
+  min-width: 180px;
+  min-height: 80px;
+  color: #000000;
+  font-weight: normal;
+  padding: 0 8px;
+}
+
+@media (max-width: 1100px) {
+  .flow-root-bg > div {
+    width: 100vw !important;
+  }
+}
