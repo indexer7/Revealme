@@ -6,12 +6,19 @@ An automated OSINT-driven web application that assesses and scores an organizati
 
 ### Prerequisites
 
-- Docker Desktop for Windows
-- WSL2 enabled
+- Docker Desktop
 - Git
 
 ### Setup Instructions
 
+#### Quick Setup (Linux/macOS)
+```bash
+git clone <repository-url>
+cd Reveal.Me
+./scripts/bootstrap.sh
+```
+
+#### Manual Setup
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
@@ -64,7 +71,9 @@ Reveal.Me/
 │   ├── postgres/              # PostgreSQL data
 │   ├── spiderfoot/            # SpiderFoot data
 │   └── reports/               # Generated reports
-└── backend/                    # FastAPI backend (to be created)
+├── backend/                    # FastAPI backend
+│   └── tests/                  # Test suite
+└── scripts/                    # Utility scripts
 ```
 
 ## 🔧 Development Workflow
@@ -131,7 +140,6 @@ docker-compose exec backend python app/create_user.py alice@example.com "P@ssw0r
 
 1. **Port conflicts**: Ensure ports 5432, 6379, 8000, and 8080 are available
 2. **Permission issues**: Run Docker commands with appropriate permissions
-3. **WSL2 issues**: Ensure WSL2 is properly configured and Docker Desktop is set to use WSL2 backend
 
 ### Health Checks
 
@@ -156,7 +164,7 @@ docker-compose logs -f worker
 
 ## 📝 Next Steps
 
-1. Create the FastAPI backend structure
+1. Complete FastAPI backend implementation
 2. Set up the frontend (to be defined)
 3. Implement OSINT connectors
 4. Develop scoring algorithms

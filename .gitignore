@@ -34,9 +34,18 @@ env/
 ENV/
 env.bak/
 venv.bak/
+.venv/
 
-# Frontend
+# Frontend placeholder
 /frontend/
+
+# Windows scripts
+start.ps1
+stop.ps1
+
+# Scripts (keep bootstrap.sh)
+scripts/*.ps1
+scripts/*.bat
 
 # Node.js
 node_modules/

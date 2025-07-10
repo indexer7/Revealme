@@ -14,14 +14,11 @@ except ImportError:
 
 class Settings(BaseSettings):
     """Application settings"""
-    if _USE_PYDANTIC_V2:
-        model_config = ConfigDict(extra="allow")
-    else:
-        class Config:
-            extra = "allow"
-            env_file = ".env"
-            env_file_encoding = "utf-8"
-            case_sensitive = True
+    class Config:
+        extra = "allow"
+        env_file = ".env"
+        env_file_encoding = "utf-8"
+        case_sensitive = True
     
     # Database
     DATABASE_URL: str = Field(default="postgresql+asyncpg://user:password@localhost/reveal_me")
