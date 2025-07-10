@@ -1,6 +1,6 @@
 import { api } from './client';
 
-export function launchScan(data: { target: string }) {
+export function launchScan(data: { domain: string; email: string; phone: string }) {
   return api.post('/scans', data);
 }
 
