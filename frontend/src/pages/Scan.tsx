@@ -1,0 +1,137 @@
+import React, { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { launchScan } from '../api/scan';
+
+export default function Scan() {
+  const [target, setTarget] = useState('');
+  const [scanType, setScanType] = useState('domain');
+  
+  const mutation = useMutation({
+    mutationFn: launchScan,
+    onSuccess: (data) => {
+      console.log('Scan launched:', data);
+      setTarget('');
+    },
+    onError: (error) => {
+      console.error('Scan failed:', error);
+    }
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (target.trim()) {
+      mutation.mutate(target);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">OSINT Scan</h1>
+          <p className="mt-2 text-gray-600">
+            Launch comprehensive OSINT scans to assess cyber-risk posture
+          </p>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-6">New Scan</h2>
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label htmlFor="target" className="block text-sm font-medium text-gray-700 mb-2">
+                Target
+              </label>
+              <input
+                type="text"
+                id="target"
+                value={target}
+                onChange={(e) => setTarget(e.target.value)}
+                placeholder="Enter domain (e.g., example.com) or email address"
+                className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="scanType" className="block text-sm font-medium text-gray-700 mb-2">
+                Scan Type
+              </label>
+              <select
+                id="scanType"
+                value={scanType}
+                onChange={(e) => setScanType(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="domain">Domain Scan</option>
+                <option value="email">Email Scan</option>
+                <option value="comprehensive">Comprehensive Scan</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <button
+                type="submit"
+                disabled={mutation.isPending || !target.trim()}
+                className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {mutation.isPending ? 'Launching Scan...' : 'Launch Scan'}
+              </button>
+              
+              {mutation.isPending && (
+                <div className="flex items-center text-blue-600">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+                  Processing...
+                </div>
+              )}
+            </div>
+          </form>
+
+          {mutation.isSuccess && (
+            <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-md">
+              <p className="text-green-800">
+                Scan launched successfully! Check the dashboard for progress updates.
+              </p>
+            </div>
+          )}
+
+          {mutation.isError && (
+            <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-md">
+              <p className="text-red-800">
+                Failed to launch scan. Please try again.
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Scan Information */}
+        <div className="mt-8 bg-white rounded-lg shadow-md p-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">About OSINT Scans</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="font-medium text-gray-900 mb-2">What we scan:</h3>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Domain registration information</li>
+                <li>• DNS records and configurations</li>
+                <li>• SSL/TLS certificate details</li>
+                <li>• Open ports and services</li>
+                <li>• Email security configurations</li>
+                <li>• Social media presence</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-medium text-gray-900 mb-2">Risk assessment:</h3>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Security vulnerabilities</li>
+                <li>• Data exposure risks</li>
+                <li>• Reputation analysis</li>
+                <li>• Compliance gaps</li>
+                <li>• Threat intelligence</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+} 
