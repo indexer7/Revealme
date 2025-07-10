@@ -4,47 +4,21 @@ An automated OSINT-driven web application that assesses and scores an organizati
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- Docker Desktop
-- Git
-
-### Setup Instructions
-
-#### Quick Setup (Linux/macOS)
+### On macOS / Linux
 ```bash
-git clone <repository-url>
-cd Reveal.Me
-./scripts/bootstrap.sh
+git clone https://github.com/indexer7/Revealme.git
+cd Revealme
+cp .env.example .env
+scripts/bootstrap.sh
 ```
 
-#### Manual Setup
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd Reveal.Me
-   ```
-
-2. **Configure environment variables**
-   ```bash
-   cp env.example .env
-   # Edit .env with your secure passwords and configuration
-   ```
-
-3. **Create data directories**
-   ```bash
-   mkdir -p data/postgres data/spiderfoot data/reports
-   ```
-
-4. **Start all services**
-   ```bash
-   docker-compose up -d
-   ```
-
-5. **Verify services are running**
-   ```bash
-   docker-compose ps
-   ```
+### On Windows
+```powershell
+git clone https://github.com/indexer7/Revealme.git
+cd Revealme
+cp .env.example .env
+scripts/bootstrap.ps1
+```
 
 ## 🏗️ Architecture
 
