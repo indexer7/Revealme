@@ -19,6 +19,7 @@ RUN apt-get update \
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir psycopg2-binary
 
 # Copy application code and Alembic files
 COPY app/ ./app/

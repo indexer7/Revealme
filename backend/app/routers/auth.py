@@ -26,7 +26,7 @@ from app.schemas.auth import (
 )
 from app.models.user import User
 
-router = APIRouter(prefix="/auth", tags=["authentication"])
+router = APIRouter(prefix="", tags=["authentication"])
 
 
 @router.post("/login", response_model=TokenResponse)

@@ -1,20 +1,29 @@
-// Vite config for Reveal.me frontend
-import { defineConfig } from 'vite';
-// Vite plugin for React: provides JSX support, fast refresh, etc.
-import react from '@vitejs/plugin-react';
-import path from 'path';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+import { componentTagger } from "lovable-tagger";
 
-export default defineConfig({
-  plugins: [react()],
+// https://vitejs.dev/config/
+export default defineConfig(({ mode }) => ({
+  server: {
+    host: "::",
+    port: 8080,
+  },
+  plugins: [
+    react(),
+    mode === 'development' &&
+    componentTagger(),
+  ].filter(Boolean),
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
+      "@": path.resolve(__dirname, "./src"),
     },
   },
+  optimizeDeps: {
+    include: ['react', 'react-dom'],
+  },
   define: {
-    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL),
+    // Prevent duplicate React instances
+    __DEV__: mode === 'development',
   },
-  server: {
-    port: 5173,
-  },
-}); 
+}));

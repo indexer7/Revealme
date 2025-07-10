@@ -1,59 +1,55 @@
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { scoringApi } from '@/services/api';
+import type { ScoringData, ScoringWeights } from '@/lib/types';
+import { toast } from '@/hooks/use-toast';
 
-import { useState, useEffect } from 'react';
+export const useScoring = (jobId: string) => {
+  const queryClient = useQueryClient();
 
-export const riskVectors = [
-  { id: 'phishing', name: 'Phishing', defaultWeight: 80 },
-  { id: 'malware', name: 'Malware', defaultWeight: 65 },
-  { id: 'dataBreach', name: 'Data Breach', defaultWeight: 90 },
-  { id: 'insiderThreat', name: 'Insider Threat', defaultWeight: 40 },
-  { id: 'credentialStuffing', name: 'Credential Stuffing', defaultWeight: 75 },
-];
-
-export type RiskWeights = { [key: string]: number[] };
-
-export interface ScoringParams {
-  riskWeights: RiskWeights;
-  advancedHeuristics: boolean;
-}
-
-const SCORING_PARAMS_KEY = 'cycopsScoringParams';
-
-export const getDefaultWeights = (): RiskWeights => {
-  const initialWeights: RiskWeights = {};
-  riskVectors.forEach(vector => {
-    initialWeights[vector.id] = [vector.defaultWeight];
+  const {
+    data: scoringData,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ['scoring', jobId],
+    queryFn: () => scoringApi.getScoring(jobId),
+    enabled: !!jobId,
+    refetchInterval: 5000, // Poll every 5 seconds for real-time updates
+    staleTime: 2000, // Consider data stale after 2 seconds
   });
-  return initialWeights;
-};
 
-const getDefaultParams = (): ScoringParams => ({
-  riskWeights: getDefaultWeights(),
-  advancedHeuristics: false,
-});
+  const updateWeightsMutation = useMutation({
+    mutationFn: (weights: ScoringWeights) => 
+      scoringApi.updateWeights(jobId, weights),
+    onSuccess: (data) => {
+      // Update the query cache with the new data
+      queryClient.setQueryData(['scoring', jobId], data);
+      
+      toast({
+        title: 'Weights updated',
+        description: 'Scoring weights have been updated successfully',
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: 'Update failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
 
-export const useScoring = () => {
-  const [scoringParams, setScoringParams] = useState<ScoringParams>(getDefaultParams());
-
-  useEffect(() => {
-    try {
-      const item = window.localStorage.getItem(SCORING_PARAMS_KEY);
-      if (item) {
-        setScoringParams(JSON.parse(item));
-      }
-    } catch (error) {
-      console.error('Error reading scoring params from localStorage', error);
-      setScoringParams(getDefaultParams());
-    }
-  }, []);
-
-  const saveScoringParams = (params: ScoringParams) => {
-    try {
-      setScoringParams(params);
-      window.localStorage.setItem(SCORING_PARAMS_KEY, JSON.stringify(params));
-    } catch (error) {
-      console.error('Error saving scoring params to localStorage', error);
-    }
+  const updateWeights = (weights: ScoringWeights) => {
+    updateWeightsMutation.mutate(weights);
   };
-  
-  return { scoringParams, saveScoringParams };
+
+  return {
+    scoringData,
+    isLoading,
+    error,
+    refetch,
+    updateWeights,
+    isUpdating: updateWeightsMutation.isPending,
+  };
 };

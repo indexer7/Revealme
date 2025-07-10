@@ -100,6 +100,17 @@ docker-compose build backend
 docker-compose up -d --build backend
 ```
 
+## 👤 User Management
+
+To create a new user (with a properly-hashed password) directly in the database, use the management script:
+
+```bash
+docker-compose exec backend python app/create_user.py alice@example.com "P@ssw0rd!" --role admin
+```
+
+- The default role is `viewer` if not specified.
+- This script uses the app's own hash_password (from app.utils.security) and AsyncSession (from app.db.session) for safe user creation.
+
 ## 🌐 Service URLs
 
 - **Backend API**: http://localhost:8000

@@ -1,10 +1,7 @@
-import React from "react";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { useToast } from '@/components/ui';
 
 const NotFound = () => {
-  const toast = useToast();
   const location = useLocation();
 
   useEffect(() => {

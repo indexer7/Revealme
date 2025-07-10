@@ -114,36 +114,6 @@ type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
 
 type ToastActionElement = React.ReactElement<typeof ToastAction>
 
-// Toast context and provider for shadcn-ui style toasts
-const ToastContext = React.createContext<{
-  success: (msg: string) => void;
-  error: (msg: string) => void;
-  info: (msg: string) => void;
-} | undefined>(undefined);
-
-export function Toaster({ children }: { children?: React.ReactNode }) {
-  // You can replace this with a more advanced toast state/logic
-  const toastApi = React.useMemo(() => ({
-    success: (msg: string) => window.alert(msg),
-    error: (msg: string) => window.alert(msg),
-    info: (msg: string) => window.alert(msg),
-  }), []);
-  return (
-    <ToastContext.Provider value={toastApi}>
-      <ToastProvider>
-        <ToastViewport />
-        {children}
-      </ToastProvider>
-    </ToastContext.Provider>
-  );
-}
-
-export function useToast() {
-  const ctx = React.useContext(ToastContext);
-  if (!ctx) throw new Error('useToast must be used within a <Toaster> provider');
-  return ctx;
-}
-
 export {
   type ToastProps,
   type ToastActionElement,
