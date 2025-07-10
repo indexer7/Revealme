@@ -64,8 +64,7 @@ Reveal.Me/
 │   ├── postgres/              # PostgreSQL data
 │   ├── spiderfoot/            # SpiderFoot data
 │   └── reports/               # Generated reports
-├── backend/                    # FastAPI backend (to be created)
-└── frontend/                   # React frontend (to be created)
+└── backend/                    # FastAPI backend (to be created)
 ```
 
 ## 🔧 Development Workflow
@@ -158,7 +157,7 @@ docker-compose logs -f worker
 ## 📝 Next Steps
 
 1. Create the FastAPI backend structure
-2. Set up the React + Vite frontend
+2. Set up the frontend (to be defined)
 3. Implement OSINT connectors
 4. Develop scoring algorithms
 5. Build report generation system
