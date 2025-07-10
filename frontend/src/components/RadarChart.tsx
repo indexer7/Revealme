@@ -1,4 +1,3 @@
-import React from 'react';
 import { Radar, RadarChart as RC, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 
 interface RadarData {

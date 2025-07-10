@@ -7,8 +7,10 @@ import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 root.render(
-  <AuthProvider>
-    <App />
-    <Toaster position="top-right" />
-  </AuthProvider>
+  <React.StrictMode>
+    <AuthProvider>
+      <App />
+      <Toaster position="top-right" />
+    </AuthProvider>
+  </React.StrictMode>
 ); 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { PieChart, Pie, Cell } from 'recharts';
 
 export default function OESRing({ score }: { score: number }) {

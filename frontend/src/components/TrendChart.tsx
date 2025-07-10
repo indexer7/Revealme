@@ -1,4 +1,3 @@
-import React from 'react';
 import { LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Line, ResponsiveContainer } from 'recharts';
 
 interface TrendData {

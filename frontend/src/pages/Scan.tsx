@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { launchScan } from '../api/scan';
 
 export default function Scan() {
-  const [target, setTarget] = useState('');
-  const [scanType, setScanType] = useState('domain');
-  
+  const [domain, setDomain] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+
   const mutation = useMutation({
     mutationFn: launchScan,
     onSuccess: (data) => {
       console.log('Scan launched:', data);
-      setTarget('');
+      setDomain('');
+      setEmail('');
+      setPhone('');
     },
     onError: (error) => {
       console.error('Scan failed:', error);
@@ -19,9 +22,7 @@ export default function Scan() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (target.trim()) {
-      mutation.mutate(target);
-    }
+    mutation.mutate({ domain, email, phone });
   };
 
   return (
@@ -36,48 +37,54 @@ export default function Scan() {
 
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-6">New Scan</h2>
-          
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="target" className="block text-sm font-medium text-gray-700 mb-2">
-                Target
+              <label htmlFor="domain" className="block text-sm font-medium text-gray-700 mb-2">
+                Domain
               </label>
               <input
                 type="text"
-                id="target"
-                value={target}
-                onChange={(e) => setTarget(e.target.value)}
-                placeholder="Enter domain (e.g., example.com) or email address"
+                id="domain"
+                value={domain}
+                onChange={e => setDomain(e.target.value)}
+                placeholder="Enter domain (e.g., example.com)"
                 className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
               />
             </div>
-
             <div>
-              <label htmlFor="scanType" className="block text-sm font-medium text-gray-700 mb-2">
-                Scan Type
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                Email
               </label>
-              <select
-                id="scanType"
-                value={scanType}
-                onChange={(e) => setScanType(e.target.value)}
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="Enter email address"
                 className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="domain">Domain Scan</option>
-                <option value="email">Email Scan</option>
-                <option value="comprehensive">Comprehensive Scan</option>
-              </select>
+              />
             </div>
-
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                Phone
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                value={phone}
+                onChange={e => setPhone(e.target.value)}
+                placeholder="Enter phone number"
+                className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
             <div className="flex items-center justify-between">
               <button
                 type="submit"
-                disabled={mutation.isPending || !target.trim()}
+                disabled={mutation.isPending || (!domain && !email && !phone)}
                 className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {mutation.isPending ? 'Launching Scan...' : 'Launch Scan'}
               </button>
-              
               {mutation.isPending && (
                 <div className="flex items-center text-blue-600">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
@@ -86,7 +93,6 @@ export default function Scan() {
               )}
             </div>
           </form>
-
           {mutation.isSuccess && (
             <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-md">
               <p className="text-green-800">
@@ -94,7 +100,6 @@ export default function Scan() {
               </p>
             </div>
           )}
-
           {mutation.isError && (
             <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-md">
               <p className="text-red-800">
@@ -103,7 +108,6 @@ export default function Scan() {
             </div>
           )}
         </div>
-
         {/* Scan Information */}
         <div className="mt-8 bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">About OSINT Scans</h2>

@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface PenaltyStep {
   text: string;
   penalty: number;

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +24,7 @@ export default function InputPage() {
         <div className="bg-white rounded-lg shadow-md p-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-6">New OSINT Scan</h1>
           
-          <form onSubmit={handleSubmit(mutation.mutate)} className="space-y-4">
+          <form onSubmit={handleSubmit(data => mutation.mutate(data))} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Domain

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { fetchUsers, createUser } from '../../api/admin';
 
 export default function AdminConsole() {

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useState, useEffect, ReactNode } from 'react';
 import { api } from '../api/client';
 
 type User = { id: string; email: string; role: 'admin' | 'viewer' };
